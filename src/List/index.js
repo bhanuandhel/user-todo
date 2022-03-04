@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 
 import ReactPaginate from "react-paginate";
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 import { Style } from "./Style";
 
@@ -18,17 +19,16 @@ const Index = (props) => {
   const { users } = useSelector((state) => state);
 
   const [validated, setValidated] = useState(false);
-  // const [userList, setUserList] = useState([]);
   const [text, setText] = useState("");
   const [page, setPage] = useState(1);
-
-  // useEffect(() => {}, [userList]);
-
+  const [deleteItems, setDeleteItem] = useState('');
+  const [duplicate, setDuplicate] = useState(false)
   const handleSubmit = (event) => {
     event.preventDefault();
     if (text) {
       const found = users.find((user) => user.name === text);
       if (found) {
+        setDuplicate(true)
       } else {
         dispatch({ type: "ADD_USER", payload: { name: text, favorite: true } });
         setText("");
@@ -125,7 +125,7 @@ const Index = (props) => {
                     <Button
                       variant="outline-secondary"
                       onClick={(e) => {
-                        deleteItem(item.name);
+                        setDeleteItem(item.name)
                       }}
                     >
                       <FontAwesomeIcon icon={faTrash} />
@@ -136,7 +136,7 @@ const Index = (props) => {
             );
           })}
       </ListGroup>
-      <Row>
+      <Row className="pt-2">
         {users.length > 4 && (
           <Pagination
             count={Math.ceil(users.length / 4)}
@@ -145,6 +145,23 @@ const Index = (props) => {
             }}
           />
         )}
+
+      <SweetAlert
+        show={deleteItems!=''?true:false}
+        title="Are your sure want to delete?"
+        text={deleteItems}
+        showCancel={true}
+        onCancel={()=>{
+          setDeleteItem('')
+        }}
+        onConfirm={ async () =>{
+         await deleteItem(deleteItems);
+          setDeleteItem('');
+        } }
+      />
+
+<SweetAlert show={duplicate} title="Duplicate entry!" onConfirm={()=>{setDuplicate(false)}}  />
+
       </Row>
     </Style>
   );
