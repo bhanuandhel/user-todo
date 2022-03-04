@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState, useEffect} from 'react';
+import "bootstrap/dist/css/bootstrap.min.css";
+import {Container, Row, Col} from "react-bootstrap";
+import List from './List/';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Container>
+        <Row className="pt-5">
+            <Col xs={12} md={4}>
+            </Col>
+            <Col xs={12} md={4}>
+                <List />
+            </Col>
+            <Col xs={12} md={4}>
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 }
 
